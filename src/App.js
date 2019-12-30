@@ -1,54 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import PokemonList from './PokemonList'
-import axios from 'axios'
-import Pagination from './Pagination'
+import Nav from './Nav'
+import MyPokemonList from './pages/MyPokemonList'
+import WildPokemonList from './pages/WildPokemonList'
+import WildPokemonDetail from './pages/WildPokemonDetail'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import './index.css'
 
 function App() {
-  const [pokemon, setPokemon] = useState([])
-  const [currentPageUrl, setCurrentPageUrl] = useState('https://pokeapi.co/api/v2/pokemon')
-  const [nextPageUrl, setNextPageUrl] = useState()
-  const [prevPageUrl, setPrevPageUrl] = useState()
-  const [loading, setLoading] = useState(true)
-  // const [pokemon, setPokemon] = useState(['bulbasaur', 'charmender'])
-
-  useEffect(() => {
-    setLoading(true)
-    // axios.get('https://pokeapi.co/api/v2/pokemon')
-    let cancel
-    axios.get(currentPageUrl, {
-      cancelToken: new axios.CancelToken(c => cancel = c)
-    })
-      .then(res => {
-        console.log(res);
-        setLoading(false)
-        setNextPageUrl(res.data.next)
-        setPrevPageUrl(res.data.previous)
-        setPokemon(res.data.results.map(p => p.name))
-      })
-    return () => cancel()
-  }, [currentPageUrl])
-
-  function goToNextPage() {
-    setCurrentPageUrl(nextPageUrl)
-  }
-
-  function goToPrevPage() {
-    setCurrentPageUrl(prevPageUrl)
-  }
-
-  if (loading) return 'loading...'
-
   return (
-    <>
-      <PokemonList
-        pokemon={pokemon}
-      />
-      <Pagination
-        goToNextPage={nextPageUrl ? goToNextPage : null}
-        goToPrevPage={prevPageUrl ? goToPrevPage : null}
-      />
-    </>
+    <Router>
+      <div className="app">
+        <Nav />
+        <Switch>
+          {/* <Route exact path="/" component={Home} /> */}
+          <Route exact path="/" component={WildPokemonList} />
+          <Route path="/my-pokemon-list" component={MyPokemonList} />
+          <Route path="/wild-pokemon-list" component={WildPokemonList} />
+          <Route path="/wild-pokemon-detail/:id" component={WildPokemonDetail} />
+        </Switch>
+      </div>
+    </Router>
   );
 }
-
+const Home = () => (
+  <div>
+    <h1>Home Page</h1>
+  </div>
+)
 export default App;
