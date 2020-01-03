@@ -4,6 +4,7 @@ import axios from 'axios'
 import Pagination from '../components/Pagination'
 import PokemonMoves from '../components/PokemonMoves';
 import PokemonTypes from '../components/PokemonTypes';
+import { Modal, Button } from 'antd'
 
 function WildPokemonDetail({ match }) {
   const [pokemon, setPokemon] = useState([])
@@ -15,7 +16,9 @@ function WildPokemonDetail({ match }) {
   const [prevPageUrl, setPrevPageUrl] = useState()
   const [loading, setLoading] = useState(true)
   // const [pokemon, setPokemon] = useState(['bulbasaur', 'charmender'])
-
+  const [modalText, setModalText] = useState('Content of the modal')
+  const [visible, setVisible] = useState(false)
+  const [confirmLoading, setConfirmLoading] = useState(false)
 
   useEffect(() => {
     fetchItem()
@@ -57,22 +60,72 @@ function WildPokemonDetail({ match }) {
   // console.log(pokemon.moves)
   // console.log(pokemon[1].name)
   let imgPath = 'https://raw.githubusercontent.com/PokeApi/sprites/master/sprites/pokemon/'
-  
+
   const catchPokemon = (pokemon) => {
+    let prob = Math.random()
+    console.log(prob)
 
-    setPokemonDex(state => {
-      const monExists = (state.filter(p => pokemon.id == p.id).length > 0)
-      console.log(monExists)
+    if (prob < 0.5) {
+      setPokemonDex(state => {
+        console.log('before', state)
+        const monExists = (state.filter(p => pokemon.id == p.id).length > 0)
 
-      if (!monExists) {
-        state = [...state, pokemon]
-        state.sort(function (a, b) {
-          return a.id - b.id
-        })
-      }
-      return state
-    })
+        if (!monExists) {
+          state = [...state, pokemon]
+          state.sort(function (a, b) {
+            return a.id - b.id
+          })
+        }
+        console.log('after', state)
+        return state
+      })
+      setPokemonName()
+    } else {
+      alert("failed :( , try again ");
+    }
   }
+
+  const setPokemonName = () => {
+    let name = prompt('you got it ^_^, \ngive your pokemon a name ', '')
+    console.log(name)
+  }
+
+  // const catchPokemon = (pokemon) => {
+
+  //   setPokemonDex(state => {
+  //     const monExists = (state.filter(p => pokemon.id == p.id).length > 0)
+  //     console.log(monExists)
+
+  //     if (!monExists) {
+  //       state = [...state, pokemon]
+  //       state.sort(function (a, b) {
+  //         return a.id - b.id
+  //       })
+  //     }
+  //     return state
+  //   })
+  // }
+  const showModal = () => {
+    setVisible(true)
+    // this.setState({
+    //   visible: true,
+    // });
+  };
+
+  const handleOk = () => {
+    setModalText('The modal will be closed after two seconds')
+    setConfirmLoading(true)
+
+    setTimeout(() => {
+      setVisible(false)
+      setConfirmLoading(false)
+    }, 2000);
+  };
+
+  const handleCancel = () => {
+    console.log('Clicked cancel button');
+    setVisible(false)
+  };
 
   return (
     <div className="app-wrapper" >
@@ -82,7 +135,29 @@ function WildPokemonDetail({ match }) {
 
       <section className="wild-pokemon">
         <img src={imgPath + match.params.id + '.png'} className="sprite"></img>
-        <button onClick={() => catchPokemon(pokemon)} className="catch-btn">catch</button>
+        <Button type="primary" onClick={() => catchPokemon(pokemon)}>
+          catch
+        </Button>
+        <h3>{pokemon.name}</h3>
+        {/* <button onClick={() => catchPokemon(pokemon)} className="catch-btn">catch</button> */}
+      </section>
+
+      <section>
+        <div>
+          {/* <Button type="primary" onClick={()=>setVisible(true)}> */}
+          <Button type="primary" onClick={() => showModal()}>
+            modal
+          </Button>
+          <Modal
+            title="Title"
+            visible={visible}
+            onOk={() => handleOk()}
+            confirmLoading={confirmLoading}
+            onCancel={() => handleCancel()}
+          >
+            <p>{modalText}</p>
+          </Modal>
+        </div>
       </section>
 
       <section className="detail-info">

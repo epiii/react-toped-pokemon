@@ -1,10 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Card } from 'antd';
+import { Skeleton, Card } from 'antd';
 
 const { Meta } = Card;
 
-export default function PokemonList({ pokemon }) {
+export default function PokemonList({ pokemon, loading }) {
     console.log(pokemon)
     let imgPath = 'https://raw.githubusercontent.com/PokeApi/sprites/master/sprites/pokemon/'
 
@@ -13,18 +13,24 @@ export default function PokemonList({ pokemon }) {
         pokemon.map(p => {
             let urlx = p.url.split('/')
 
-            return (
-                <Link to={`/wild-pokemon-detail/${urlx[6]}`}>
+            if (loading) {
+                return (
+                    <Skeleton loading={loading} avatar={'circle'} paragraph={true} />
+                )
+            } else {
+                return (
+                    <Link key={p.name} to={`/wild-pokemon-detail/${urlx[6]}`}>
 
-                    <Card
-                        hoverable
-                        style={{ width: 240 }}
-                        cover={<img alt="example" src={imgPath + urlx[6] + '.png'} />}
-                    >
-                        <Meta title={p.name} description={''} />
-                    </Card>
-                </Link>
-            )
+                        <Card
+                            hoverable
+                            style={{ width: 240 }}
+                            cover={<img alt="example" src={imgPath + urlx[6] + '.png'} />}
+                        >
+                            <Meta title={p.name} description={''} />
+                        </Card>
+                    </Link>
+                )
+            }
         })
         // }</div>
 

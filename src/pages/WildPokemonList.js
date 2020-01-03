@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PokemonList from '../components/PokemonList'
 import axios from 'axios'
 import Pagination from '../components/Pagination'
-// import { Menu, Icon } from 'antd'
+import { BackTop, Skeleton, Switch, List, Avatar, Icon, Row, Col, Slider } from 'antd'
 
 const urlx = 'https://pokeapi.co/api/v2/pokemon'
 
@@ -41,7 +41,7 @@ function WildPokemonList() {
     setCurrentPageUrl(prevPageUrl)
   }
 
-  if (loading) return 'loading...'
+  // if (loading) return 'loading...'
 
   // console.log(pokemon)
   // console.log(pokemon[1].name)
@@ -50,13 +50,39 @@ function WildPokemonList() {
       <header>
         <h1 className="title">Pokemon List</h1>
       </header>
-      <PokemonList
-        pokemon={pokemon}
-      />
-      <Pagination
-        goToNextPage={nextPageUrl ? goToNextPage : null}
-        goToPrevPage={prevPageUrl ? goToPrevPage : null}
-      />
+
+      <Row type="flex" justify="space-around" align="middle">
+        <Pagination
+          goToNextPage={nextPageUrl ? goToNextPage : null}
+          goToPrevPage={prevPageUrl ? goToPrevPage : null}
+        />
+      </Row><br />
+      {
+        // loading ? (
+        //   <Skeleton loading={loading} avatar={'circle'} paragraph={false} />
+        // ) : (
+        <Row type="flex" justify="space-around" align="middle">
+          {
+            <PokemonList
+              loading={loading}
+              pokemon={pokemon}
+            />
+          }
+        </Row>
+        // )
+      }
+      <br />
+      <Row type="flex" justify="space-around" align="middle">
+        <Pagination
+          goToNextPage={nextPageUrl ? goToNextPage : null}
+          goToPrevPage={prevPageUrl ? goToPrevPage : null}
+        />
+      </Row>
+
+      <div>
+        <BackTop />
+      </div>
+
     </div>
   );
 }

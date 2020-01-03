@@ -6,7 +6,7 @@ export default function PokemonTypes({ types }) {
     return (
         <div className="pokemon-type">{
             types.map(p => (
-                <div key={p.id}>
+                <div key={p.type.name}>
                     {p.type.name}
                 </div>
             ))

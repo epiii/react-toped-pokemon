@@ -1,7 +1,10 @@
 import React from 'react'
-import { Menu, Icon } from 'antd'
 import { Link } from 'react-router-dom'
-const { SubMenu } = Menu;
+import { Menu, Icon, Layout, Breadcrumb } from 'antd';
+import Title from 'antd/lib/skeleton/Title';
+
+// const { SubMenu } = Menu;
+const { Header, Content, Footer } = Layout;
 
 function Nav() {
     const navStyle = {
@@ -27,42 +30,51 @@ function Nav() {
         //         </Link>
         //     </ul>
         // </nav>
-        <Menu
+
+        <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
+            {/* <div className="logo" /> */}
+            {/* <Title level={3}>PokeNyamm</Title> */}
+            
+            <Menu
+                theme="dark"
+                mode="horizontal"
+                defaultSelectedKeys={['all']}
+                style={{ lineHeight: '64px' }}
+                mode="horizontal"
             // onClick={handleClick}
-            mode="horizontal"
-        // selectedKeys={[this.state.current]}
-        >
-            <Menu.Item key="all">
-                <Link to="/wild-pokemon-list">
-                    <Icon type="appstore" />
-                    All
+            // selectedKeys={[this.state.current]}
+            >
+                <Menu.Item key="all">
+                    <Link to="/wild-pokemon-list">
+                        <Icon type="appstore" />
+                        All
                 </Link>
-            </Menu.Item>
+                </Menu.Item>
 
-            <Menu.Item key="alipay">
-                <Link to="/my-pokemon-list">
-                    <Icon type="mail" />
-                    My Collection
+                <Menu.Item key="alipay">
+                    <Link to="/my-pokemon-list">
+                        <Icon type="mail" />
+                        My Collection
                 </Link>
-            </Menu.Item>
+                </Menu.Item>
 
-            {/* <Menu.Item key="mail">
+                {/* <Menu.Item key="mail">
                 <Icon type="mail" />
                 All
             </Menu.Item> */}
-            {/* <Menu.Item key="app" disabled>
+                {/* <Menu.Item key="app" disabled>
                 <Icon type="appstore" />
                 Navigation Two
             </Menu.Item> */}
 
-            {/* <Menu.Item key="alipay">
+                {/* <Menu.Item key="alipay">
                 <a href="https://ant.design" target="_blank" rel="noopener noreferrer">
                     Navigation Four - Link
                 </a>
             </Menu.Item> */}
 
-        </Menu>
-
+            </Menu>
+        </Header>
     )
 }
 
